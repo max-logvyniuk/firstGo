@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	_ "github.com/lib/pq"
+	fibgen "github.com/maxLogvynyuk/firstGo/package-fibgen"
 )
 
 var tpl *template.Template
@@ -169,12 +170,12 @@ func deleteLesson(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func fibgen() {
+func fibgenTest() {
 	jobs := make(chan int, 100)
 	results := make(chan int, 100)
 
-	go Worker(jobs, results)
-	go Worker(jobs, results)
+	go fibgen.Worker(jobs, results)
+	go fibgen.Worker(jobs, results)
 
 	for i := 0; i < 100; i++ {
 		jobs <- i
