@@ -45,6 +45,8 @@ func main() {
 	http.HandleFunc("/set-lesson", setLesson)
 	http.HandleFunc("/update-lesson", updateLesson)
 	http.HandleFunc("/delete-lesson", deleteLesson)
+	http.HandleFunc("/fibgen", fibgenPage)
+	http.HandleFunc("/fibstart", fibgenTest)
 	http.Handle("/stuff/", http.StripPrefix("/stuff", http.FileServer(http.Dir("./assets/"))))
 	http.ListenAndServe(":8070", nil)
 }
@@ -170,10 +172,25 @@ func deleteLesson(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func fibgenTest() {
+func fibgenPage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
+
+	tpl.ExecuteTemplate(w, "fibgen-page.gohtml", nil)
+}
+
+func fibgenTest(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
 	jobs := make(chan int, 100)
 	results := make(chan int, 100)
+	var fv int
+	var fs []int
 
+	go fibgen.Worker(jobs, results)
+	go fibgen.Worker(jobs, results)
 	go fibgen.Worker(jobs, results)
 	go fibgen.Worker(jobs, results)
 
@@ -184,5 +201,10 @@ func fibgenTest() {
 
 	for j := 0; j < 100; j++ {
 		fmt.Println(<-results)
+		fv = <-results
+		fs = append(fs, fv)
+		fmt.Println("QQQQQQQQQQQ", fs)
 	}
+
+	tpl.ExecuteTemplate(w, "fibgen-page.gohtml", fs)
 }
