@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go to eleven</title>
+</head>
+<body>
+    <h1>Update page</h1>
+    <form action="/update-lesson" method="post">
+        <label for="data-input">Update data</label>
+        <input type="hidden" value="{{.ID}}" name="lid"/>
+        <input type="text" id="data-input" name="l-name" value="{{.Lname}}"/>
+        <input type="submit"/>
+    </form>
+</body>
+</html>

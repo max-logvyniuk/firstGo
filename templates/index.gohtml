@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go to eleven</title>
+</head>
+<body>
+    <h1>Home page</h1>
+    {{range .}}
+    <h1>
+      ID - {{.ID}} ..... Lname - {{.Lname}} 
+      <a href="/set-lesson?lid={{.ID}}">Update</a>
+      <a href="/delete-lesson?lid={{.ID}}">Delete</a>
+      </h1>
+    {{end}}
+    <img src="/stuff/nature_0001.jpg"/>
+    <form action="/add-lesson" method="post">
+        <label for="data-input">Add data</label>
+        <input type="text" id="data-input" name="l-name"/>
+        <input type="submit"/>
+    </form>
+</body>
+</html>
